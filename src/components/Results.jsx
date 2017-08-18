@@ -17,26 +17,25 @@ import '../css/style.css';
 class Results extends React.Component {
     constructor(props) {
         super(props);
+
+        // De key voor het opvragen van de api is in een aparte state (property) gezet
         this.state = {
             key: "8ff486de926af1dcde1f80cd213d9fc0",
             movieId: ''
         };
 
+        // Vraagt nieuwe titles aan zonder dat de page gerefreshd moet worden
         this.getTitle = this.getTitle.bind(this);
 
     }
 
 
     getTitle(event){
-        console.log("overview ", event.target.className);
-
+        //  Slaat de film waarop geklikt is op zodat bij de details van deze film opgehaald worden
         this.setState({title: event.target.text});
         this.setState({movieId: event.target.className});
     }
-  
-    setDetails(){
 
-    }
 
     render() {
 
@@ -44,7 +43,7 @@ class Results extends React.Component {
 
         let movieId = this.state.movieId.replace('active ', '');
 
-        let val = value.replace(' ','%20');
+        let val = value.replace(' ','%20'); // Haalt de spaties uit de zoekopdracht en verplaatst de voor %20
         let key = this.state.key;
 
 
@@ -53,12 +52,13 @@ class Results extends React.Component {
 
         Request.get(url).then((response) => {
             this.setState({
-                movies: response.body.results
+                movies: response.body.results  // alle resultaten worden uit de api met trefwoorden in de URL gehaald
             })
         });
 
 
         var movies = _.map(this.state.movies, (movie) => {
+            // Alle movies worden in een een link geplaatst waarna de getTitle wordt aangeroepen als er op geklikt is
             return <div>
                 <li><NavLink to='/details/' className={movie.id} onClick={this.getTitle}>{movie.title}<p className="overview" hidden>{movie.overview}</p></NavLink>
 
@@ -66,11 +66,9 @@ class Results extends React.Component {
 
                 </div>
             });
-
-        //console.log("Results: MovieDetails, ", this.state.movieDetails);
         
-
         return (
+                    // Details,jsx wordt geladen en alle properties die details aan resultaten geeft
                     <BrowserRouter>
                         <div className="results">
                             <Route path="/details" render={ () => <Details title={this.state.title} name={this.state.movieDetails} id={movieId}/>}/>

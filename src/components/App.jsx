@@ -5,6 +5,8 @@ import Search from './Search.jsx';
 import Results from './Results.jsx';
 import Details from './Details.jsx';
 
+
+//Elke route heeft zijn eigen component
 const App = () => (
     <BrowserRouter>
         <div className="container">
